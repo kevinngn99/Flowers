@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
+import EditText from '../components/EditText.js';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 const axios = require('axios');
 
@@ -116,9 +117,21 @@ class Pictures extends Component {
 
         const Sight = (props) => {
             if (this.state.loaded) {
-                var chunk = this.state.sightings.map((obj) => {
+                var chunk = this.state.sightings.map((obj, index) => {
                     if (obj['NAME'] === props.name) {
-                        return <p> Sighted By: {obj['PERSON']} <br /> Location: {obj['LOCATION']} <br /> Date: {obj['SIGHTED']} </p>
+                        return (
+                            <div>
+                                <div>
+                                    Sighting: #{index + 1}
+                                    <div style={{color: "#8892a0"}}> 
+                                        <EditText input={obj['PERSON']} change="person"></EditText> 
+                                        <EditText input={obj['LOCATION']} change="location"></EditText>
+                                        <EditText input={obj['SIGHTED']} change="date"></EditText>
+                                    </div>
+                                    <br/>
+                                </div>
+                            </div>
+                        );
                     }
                     else {
                         return <div></div>
@@ -132,30 +145,36 @@ class Pictures extends Component {
         }
 
         var block = this.state.files.map((file, index) => {
-            var path = './imgs/flowers/' + file;
-            return <div className="col-sm-3 text-left">
-                <div className="fdb-box p-0">
-                    <img key={file} alt="img" className="img-fluid rounded-0" src={path} />
-                    <div className="content">
-                        <div style={{ height: "150px" }} className="p-3">
-                            <h3><strong> {this.state.name[index]} </strong></h3>
-                            <p> {this.state.genus[index]} <br /> {this.state.species[index]} <br /> </p>
+            if (this.state.loaded) {
+                var path = './imgs/flowers/' + file;
+                return <div className="col-sm-3 text-left">
+                    <div className="fdb-box p-0">
+                        <img key={file} alt="img" className="img-fluid rounded-0" src={path} />
+                        <div className="content">
+                            <div className="p-3">
+                                <div> <h3><strong> <EditText input={this.state.name[index]} change="name"></EditText> </strong></h3> </div>
+                                <div><EditText input={this.state.genus[index]} change="genus"></EditText></div>
+                                <div><EditText input={this.state.species[index]} change="species"></EditText></div>
+                            </div>
+                            <Accordion>
+                                <Card style={{ borderBottomColor: "#FFFFFF", borderRightColor: "#FFFFFF", borderLeftColor: "#FFFFFF" }}>
+                                    <div className="p-3">
+                                        <Toggle style={{ float: "left" }} eventKey="0"></Toggle>
+                                        <button style={{ float: "right" }} className="btn btn-outline-secondary" type="button" > Delete </button>
+                                    </div>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body> <Sight name={this.state.name[index]}></Sight> </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
                         </div>
-                        <Accordion>
-                            <Card style={{ borderBottomColor: "#FFFFFF", borderRightColor: "#FFFFFF", borderLeftColor: "#FFFFFF" }}>
-                                <div className="p-3">
-                                    <Toggle style={{ float: "left" }} eventKey="0"></Toggle>
-                                    <button style={{ float: "right" }} className="btn btn-outline-secondary" type="button" > Delete </button>
-                                </div>
-                                <Accordion.Collapse eventKey="0">
-                                    <Card.Body> <Sight name={this.state.name[index]}></Sight> </Card.Body>
-                                </Accordion.Collapse>
-                            </Card>
-                        </Accordion>
                     </div>
+                    <div className="row-50"></div>
                 </div>
-                <div className="row-50"></div>
-            </div>
+            }
+            else {
+                return <div></div>
+            }
         });
 
         return <section className="fdb-block team-1">
@@ -174,7 +193,7 @@ class Pictures extends Component {
                         <div className="fdb-box p-0">
                             <img style={{ padding: "20px" }} alt="img" className="img-fluid rounded-0" src="./imgs/flowers/add.png" />
                             <div className="content">
-                                <div style={{ height: "150px" }} className="p-3">
+                                <div className="p-3">
                                     <h3><strong>Common Name</strong></h3>
                                     <p> Genus <br /> Species <br /> </p>
                                 </div>
