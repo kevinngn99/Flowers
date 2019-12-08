@@ -83,13 +83,6 @@ exports.sightingsUpdate = (req, res) => {
     const date = "'" + req.body.date + "'";
     const change = req.body.change;
 
-    console.log(newName);
-    console.log(person);
-    console.log(name);
-    console.log(location);
-    console.log(date);
-    console.log(change);
-
     if (change === "person") {
         const SQLUpdatePerson = 'UPDATE SIGHTINGS SET PERSON = ' + newName + ' WHERE SIGHTINGS.PERSON = ' + person + ' AND SIGHTINGS.NAME = ' + name + ' AND SIGHTINGS.LOCATION = ' + location + ' AND SIGHTINGS.SIGHTED = ' + date;
         const db = new sqlite3.Database(__dirname + '/flowers2019.db');

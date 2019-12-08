@@ -93,21 +93,25 @@ class Pictures extends Component {
                 console.log(err);
             });
 
+            this.sightingsFunction();
+    }
+
+    sightingsFunction = () => {
         axios.post('/api/sightings')
-            .then((res, err) => {
-                if (!err) {
-                    var m = [];
+        .then((res, err) => {
+            if (!err) {
+                var m = [];
 
-                    for (var j = 0; j < res.data.length; j++) {
-                        m.push(res.data[j]);
-                    }
-
-                    this.setState({ sightings: m });
+                for (var j = 0; j < res.data.length; j++) {
+                    m.push(res.data[j]);
                 }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+
+                this.setState({ sightings: m });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     }
 
     render() {
@@ -125,9 +129,9 @@ class Pictures extends Component {
                                 <div>
                                     Sighting: #{index + 1}
                                     <div style={{color: "#8892a0"}}> 
-                                        <SightingsEditText name={obj['NAME']} person={obj['PERSON']} location={obj['LOCATION']} date={obj['SIGHTED']} change="person"></SightingsEditText>
-                                        <SightingsEditText name={obj['NAME']} location={obj['LOCATION']} person={obj['PERSON']} date={obj['SIGHTED']} change="location"></SightingsEditText>
-                                        <SightingsEditText name={obj['NAME']} date={obj['SIGHTED']} person={obj['PERSON']} location={obj['LOCATION']} change="date"></SightingsEditText>
+                                        <SightingsEditText update={this.sightingsFunction} name={obj['NAME']} person={obj['PERSON']} location={obj['LOCATION']} date={obj['SIGHTED']} change="person"></SightingsEditText>
+                                        <SightingsEditText update={this.sightingsFunction} name={obj['NAME']} location={obj['LOCATION']} person={obj['PERSON']} date={obj['SIGHTED']} change="location"></SightingsEditText>
+                                        <SightingsEditText update={this.sightingsFunction} name={obj['NAME']} date={obj['SIGHTED']} person={obj['PERSON']} location={obj['LOCATION']} change="date"></SightingsEditText>
                                     </div>
                                     <br/>
                                 </div>

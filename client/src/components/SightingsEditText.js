@@ -17,6 +17,7 @@ class SightingsEditText extends Component {
         }
 
         this.state = {
+            update: this.props.update,
             value: val,
             person: this.props.person,
             name: this.props.name,
@@ -46,7 +47,7 @@ class SightingsEditText extends Component {
         axios.post('/api/updateSightings', obj)
             .then((res, err) => {
                 if (!err) {
-                    console.log(res.data);
+                    this.state.update();
                 }
             })
             .catch((err) => {
