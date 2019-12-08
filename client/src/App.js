@@ -4,7 +4,7 @@ import '../node_modules/froala-design-blocks/dist/css/froala_blocks.css';
 import Login from './forms/Login.jsx';
 import Header from './headers/Header.jsx';
 import Flowers from './components/Flowers.jsx';
-import Pictures from './teams/Pictures.jsx';
+import Pictures from './teams/Pictures.js';
 import Footer from './footers/Footer.jsx';
 
 import {Route, BrowserRouter as Router} from "react-router-dom";

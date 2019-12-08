@@ -28,7 +28,7 @@ class Login extends Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to='/flowers'></Redirect>
+      return <Redirect to='/pictures'></Redirect>
     }
     else {
       return <section className="fdb-block py-0">

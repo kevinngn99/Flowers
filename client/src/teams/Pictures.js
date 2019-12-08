@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
-import {useAccordionToggle} from 'react-bootstrap/AccordionToggle';
+import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 const axios = require('axios');
-
-function Toggle({eventKey}) {
-    var onToggle = useAccordionToggle(eventKey);
-    return <button eventKey="0" className="btn btn-outline-primary" type="button" onClick={onToggle}> View </button>
-}
 
 class Pictures extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            loaded: false,
+            sightings: [],
             genus: [],
             species: [],
             name: [],
@@ -71,47 +68,87 @@ class Pictures extends Component {
             ]
         };
 
-        axios.post('/api/retrieve')
-        .then((res, err) => {
-          if (!err) {
-            var g = [];
-            var s = [];
-            var n = [];
-            for (var i = 0; i < res.data.length; i++) {
-              g.push(res.data[i]['GENUS']);
-              s.push(res.data[i]['SPECIES']);
-              n.push(res.data[i]['COMNAME']);
-            }
-    
-            this.setState({genus: g});
-            this.setState({species: s});
-            this.setState({name: n});
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        })
+        axios.post('/api/flowers')
+            .then((res, err) => {
+                if (!err) {
+                    var g = [];
+                    var s = [];
+                    var n = [];
+
+                    for (var i = 0; i < res.data.length; i++) {
+                        g.push(res.data[i]['GENUS']);
+                        s.push(res.data[i]['SPECIES']);
+                        n.push(res.data[i]['COMNAME']);
+                    }
+
+                    this.setState({ genus: g });
+                    this.setState({ species: s });
+                    this.setState({ name: n });
+                    this.setState({ loaded: true });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+        axios.post('/api/sightings')
+            .then((res, err) => {
+                if (!err) {
+                    var m = [];
+
+                    for (var j = 0; j < res.data.length; j++) {
+                        m.push(res.data[j]);
+                    }
+
+                    this.setState({ sightings: m });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     render() {
+        const Toggle = (props) => {
+            var onToggle = useAccordionToggle(props.eventKey);
+            return <button eventKey="0" className="btn btn-outline-primary" type="button" onClick={onToggle}> View </button>
+        }
+
+        const Sight = (props) => {
+            if (this.state.loaded) {
+                var chunk = this.state.sightings.map((obj) => {
+                    if (obj['NAME'] === props.name) {
+                        return <p> Sighted By: {obj['PERSON']} <br /> Location: {obj['LOCATION']} <br /> Date: {obj['SIGHTED']} </p>
+                    }
+                    else {
+                        return <div></div>
+                    }
+                });
+                return chunk;
+            }
+            else {
+                return <div></div>
+            }
+        }
+
         var block = this.state.files.map((file, index) => {
             var path = './imgs/flowers/' + file;
             return <div className="col-sm-3 text-left">
                 <div className="fdb-box p-0">
-                <img key={file} alt="img" className="img-fluid rounded-0" src={path} />
+                    <img key={file} alt="img" className="img-fluid rounded-0" src={path} />
                     <div className="content">
-                        <div style={{height: "150px"}} className="p-3">
+                        <div style={{ height: "150px" }} className="p-3">
                             <h3><strong> {this.state.name[index]} </strong></h3>
-                            <p> {this.state.genus[index]} <br/> {this.state.species[index]} <br/> </p>
+                            <p> {this.state.genus[index]} <br /> {this.state.species[index]} <br /> </p>
                         </div>
                         <Accordion>
-                            <Card style={{borderBottomColor: "#FFFFFF", borderRightColor: "#FFFFFF", borderLeftColor: "#FFFFFF"}}>
+                            <Card style={{ borderBottomColor: "#FFFFFF", borderRightColor: "#FFFFFF", borderLeftColor: "#FFFFFF" }}>
                                 <div className="p-3">
-                                    <Toggle style={{float: "left"}} eventKey="0"></Toggle>
-                                    <button style={{float: "right"}} className="btn btn-outline-secondary" type="button" > Delete </button>
+                                    <Toggle style={{ float: "left" }} eventKey="0"></Toggle>
+                                    <button style={{ float: "right" }} className="btn btn-outline-secondary" type="button" > Delete </button>
                                 </div>
                                 <Accordion.Collapse eventKey="0">
-                                    <Card.Body> <p> Sighting Number: <br/> Sighted By: <br/> Location: <br/> Date: </p> </Card.Body>
+                                    <Card.Body> <Sight name={this.state.name[index]}></Sight> </Card.Body>
                                 </Accordion.Collapse>
                             </Card>
                         </Accordion>
@@ -135,19 +172,19 @@ class Pictures extends Component {
                 <div className="row">
                     <div className="col-sm-3 text-left">
                         <div className="fdb-box p-0">
-                        <img style={{padding: "20px"}} alt="img" className="img-fluid rounded-0" src="./imgs/flowers/add.png" />
+                            <img style={{ padding: "20px" }} alt="img" className="img-fluid rounded-0" src="./imgs/flowers/add.png" />
                             <div className="content">
-                                <div style={{height: "150px"}} className="p-3">
+                                <div style={{ height: "150px" }} className="p-3">
                                     <h3><strong>Common Name</strong></h3>
-                                    <p> Genus <br/> Species <br/> </p>
+                                    <p> Genus <br /> Species <br /> </p>
                                 </div>
                                 <Accordion>
-                                    <Card style={{borderBottomColor: "#FFFFFF", borderRightColor: "#FFFFFF", borderLeftColor: "#FFFFFF"}}>
+                                    <Card style={{ borderBottomColor: "#FFFFFF", borderRightColor: "#FFFFFF", borderLeftColor: "#FFFFFF" }}>
                                         <div className="p-3">
                                             <button className="btn btn-outline-success" type="button" > Add </button>
                                         </div>
                                         <Accordion.Collapse eventKey="0">
-                                            <Card.Body> <p> Sighting Number: <br/> Sighted By: <br/> Location: <br/> Date: </p> </Card.Body>
+                                            <Card.Body> <p> Sighting Number: <br /> Sighted By: <br /> Location: <br /> Date: </p> </Card.Body>
                                         </Accordion.Collapse>
                                     </Card>
                                 </Accordion>
