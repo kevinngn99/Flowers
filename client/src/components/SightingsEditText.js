@@ -1,12 +1,27 @@
 import React, { Component } from 'react';
 const axios = require('axios');
 
-class EditText extends Component {
+class SightingsEditText extends Component {
     constructor(props) {
         super(props);
 
+        var val;
+        if (this.props.change === 'person') {
+            val = this.props.person;
+        }
+        else if (this.props.change === 'location') {
+            val = this.props.location;
+        }
+        else if (this.props.change === 'date') {
+            val = this.props.date;
+        }
+
         this.state = {
-            value: this.props.input,
+            value: val,
+            person: this.props.person,
+            name: this.props.name,
+            location: this.props.location,
+            date: this.props.date,
             change: this.props.change,
             isEditing: false
         };
@@ -17,16 +32,18 @@ class EditText extends Component {
     }
 
     onUpdate = () => {
-        var old = this.state.value;
         this.setState({isEditing: false});
         this.setState({value: document.getElementById('editValue').value});
 
         var obj = {
             newName: document.getElementById('editValue').value,
-            oldName: old,
+            person: this.state.person,
+            name: this.state.name,
+            location: this.state.location,
+            date: this.state.date,
             change: this.state.change
         };
-        axios.post('/api/updateFlowers', obj)
+        axios.post('/api/updateSightings', obj)
             .then((res, err) => {
                 if (!err) {
                     console.log(res.data);
@@ -64,4 +81,4 @@ class EditText extends Component {
     }
 }
 
-export default EditText
+export default SightingsEditText

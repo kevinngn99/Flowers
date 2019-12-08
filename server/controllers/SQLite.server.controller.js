@@ -24,7 +24,7 @@ exports.getSightings = (req, res) => {
     });
 }
 
-exports.update = (req, res) => {
+exports.flowersUpdate = (req, res) => {
     const newName = "'" + req.body.newName + "'";
     const oldName = "'" + req.body.oldName + "'";
     const change = req.body.change;
@@ -73,13 +73,57 @@ exports.update = (req, res) => {
             }
         });
     }
-    else if (change === "person") {
+}
 
+exports.sightingsUpdate = (req, res) => {
+    const newName = "'" + req.body.newName + "'";
+    const person = "'" + req.body.person + "'";
+    const name = "'" + req.body.name + "'";
+    const location = "'" + req.body.location + "'";
+    const date = "'" + req.body.date + "'";
+    const change = req.body.change;
+
+    console.log(newName);
+    console.log(person);
+    console.log(name);
+    console.log(location);
+    console.log(date);
+    console.log(change);
+
+    if (change === "person") {
+        const SQLUpdatePerson = 'UPDATE SIGHTINGS SET PERSON = ' + newName + ' WHERE SIGHTINGS.PERSON = ' + person + ' AND SIGHTINGS.NAME = ' + name + ' AND SIGHTINGS.LOCATION = ' + location + ' AND SIGHTINGS.SIGHTED = ' + date;
+        const db = new sqlite3.Database(__dirname + '/flowers2019.db');
+        db.all(SQLUpdatePerson, (err, rows) => {
+            if (!err) {
+                res.send('Person has been changed!');
+            }
+            else {
+                console.log(err);
+            }
+        });
     }
     else if (change === "location") {
-
+        const SQLUpdateLocation = 'UPDATE SIGHTINGS SET LOCATION = ' + newName + ' WHERE SIGHTINGS.PERSON = ' + person + ' AND SIGHTINGS.NAME = ' + name + ' AND SIGHTINGS.LOCATION = ' + location + ' AND SIGHTINGS.SIGHTED = ' + date;
+        const db = new sqlite3.Database(__dirname + '/flowers2019.db');
+        db.all(SQLUpdateLocation, (err, rows) => {
+            if (!err) {
+                res.send('Location has been changed!');
+            }
+            else {
+                console.log(err);
+            }
+        });
     }
     else if (change === "date") {
-
+        const SQLUpdateDate = 'UPDATE SIGHTINGS SET SIGHTED = ' + newName + ' WHERE SIGHTINGS.PERSON = ' + person + ' AND SIGHTINGS.NAME = ' + name + ' AND SIGHTINGS.LOCATION = ' + location + ' AND SIGHTINGS.SIGHTED = ' + date;
+        const db = new sqlite3.Database(__dirname + '/flowers2019.db');
+        db.all(SQLUpdateDate, (err, rows) => {
+            if (!err) {
+                res.send('Date has been changed!');
+            }
+            else {
+                console.log(err);
+            }
+        });
     }
 }

@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.route('/flowers').post(SQLite.getFlowers);
 router.route('/sightings').post(SQLite.getSightings);
-router.route('/update').post(SQLite.update);
+router.route('/updateFlowers').post(SQLite.flowersUpdate);
+router.route('/updateSightings').post(SQLite.sightingsUpdate);
 
 module.exports = router;

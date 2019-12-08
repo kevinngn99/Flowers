@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import EditText from '../components/EditText.js';
+import SightingsEditText from '../components/SightingsEditText.js';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 const axios = require('axios');
 
@@ -124,9 +125,9 @@ class Pictures extends Component {
                                 <div>
                                     Sighting: #{index + 1}
                                     <div style={{color: "#8892a0"}}> 
-                                        <EditText input={obj['PERSON']} change="person"></EditText> 
-                                        <EditText input={obj['LOCATION']} change="location"></EditText>
-                                        <EditText input={obj['SIGHTED']} change="date"></EditText>
+                                        <SightingsEditText name={obj['NAME']} person={obj['PERSON']} location={obj['LOCATION']} date={obj['SIGHTED']} change="person"></SightingsEditText>
+                                        <SightingsEditText name={obj['NAME']} location={obj['LOCATION']} person={obj['PERSON']} date={obj['SIGHTED']} change="location"></SightingsEditText>
+                                        <SightingsEditText name={obj['NAME']} date={obj['SIGHTED']} person={obj['PERSON']} location={obj['LOCATION']} change="date"></SightingsEditText>
                                     </div>
                                     <br/>
                                 </div>
