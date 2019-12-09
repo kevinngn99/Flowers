@@ -5,6 +5,7 @@ import EditText from '../components/EditText.js';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 import SightingsBody from '../components/SightingsBody.js';
 import InsertBody from '../components/InsertBody.js';
+import DeleteFlower from '../components/DeleteFlower.js';
 const axios = require('axios');
 
 class Pictures extends Component {
@@ -71,30 +72,37 @@ class Pictures extends Component {
             ]
         };
 
+        this.flowersFunction(null);
+        this.sightingsFunction();
+    }
+
+    flowersFunction = (index) => {
         axios.post('/api/flowers')
-            .then((res, err) => {
-                if (!err) {
-                    var g = [];
-                    var s = [];
-                    var n = [];
+        .then((res, err) => {
+            if (!err) {
+                var g = [];
+                var s = [];
+                var n = [];
 
-                    for (var i = 0; i < res.data.length; i++) {
-                        g.push(res.data[i]['GENUS']);
-                        s.push(res.data[i]['SPECIES']);
-                        n.push(res.data[i]['COMNAME']);
-                    }
-
-                    this.setState({ genus: g });
-                    this.setState({ species: s });
-                    this.setState({ name: n });
-                    this.setState({ loaded: true });
+                for (var i = 0; i < res.data.length; i++) {
+                    g.push(res.data[i]['GENUS']);
+                    s.push(res.data[i]['SPECIES']);
+                    n.push(res.data[i]['COMNAME']);
                 }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
 
-            this.sightingsFunction();
+                this.setState({ genus: g });
+                this.setState({ species: s });
+                this.setState({ name: n });
+                this.setState({ loaded: true });
+
+                if (index != null) {
+                    this.deletePicture(index);
+                }
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     }
 
     sightingsFunction = () => {
@@ -113,6 +121,12 @@ class Pictures extends Component {
         .catch((err) => {
             console.log(err);
         });
+    }
+
+    deletePicture = (index) => {
+        var files = this.state.files;
+        files.splice(index, 1);
+        this.setState({files: files});
     }
 
     render() {
@@ -140,43 +154,48 @@ class Pictures extends Component {
             }
         }
 
-        var block = this.state.files.map((file, index) => {
+        const Block = () => {
             if (this.state.loaded) {
-                var path = './imgs/flowers/' + file;
-                return <div className="col-sm-3 text-left">
-                    <div className="fdb-box p-0">
-                        <img key={file} alt="img" className="img-fluid rounded-0" src={path} />
-                        <div className="content">
-                            <div className="p-3">
-                                <div> <h3><strong> <EditText input={this.state.name[index]} change="name"></EditText> </strong></h3> </div>
-                                <div><EditText input={this.state.genus[index]} change="genus"></EditText></div>
-                                <div><EditText input={this.state.species[index]} change="species"></EditText></div>
-                            </div>
-                            <Accordion>
-                                <Card style={{ borderBottomColor: "#FFFFFF", borderRightColor: "#FFFFFF", borderLeftColor: "#FFFFFF" }}>
+                var block = this.state.files.map((file, index) => {
+                    var path = './imgs/flowers/' + file;
+                    return (
+                        <div className="col-sm-3 text-left">
+                            <div className="fdb-box p-0">
+                                <img key={file} alt="img" className="img-fluid rounded-0" src={path} />
+                                <div className="content">
                                     <div className="p-3">
-                                        <div style={{width: "100%"}}>
-                                            <Toggle eventKey="0"></Toggle>
-                                            <button style={{ width: "45%", float: "right" }} className="btn btn-outline-secondary" type="button" > <i class="fas fa-trash-alt"></i> </button>
-                                        </div>
+                                        <div> <h3><strong> <EditText input={this.state.name[index]} change="name"></EditText> </strong></h3> </div>
+                                        <div><EditText input={this.state.genus[index]} change="genus"></EditText></div>
+                                        <div><EditText input={this.state.species[index]} change="species"></EditText></div>
                                     </div>
-                                    <Accordion.Collapse eventKey="0">
-                                        <div>
-                                            <Card.Body> <Sight name={this.state.name[index]}></Sight> </Card.Body>
-                                            <InsertBody update={this.sightingsFunction} name={this.state.name[index]}></InsertBody>
-                                        </div>
-                                    </Accordion.Collapse>
-                                </Card>
-                            </Accordion>
+                                    <Accordion>
+                                        <Card style={{ borderBottomColor: "#FFFFFF", borderRightColor: "#FFFFFF", borderLeftColor: "#FFFFFF" }}>
+                                            <div className="p-3">
+                                                <div style={{width: "100%"}}>
+                                                    <Toggle eventKey="0"></Toggle>
+                                                    <DeleteFlower update={this.flowersFunction} index={index} name={this.state.name[index]} genus={this.state.genus[index]} species={this.state.species[index]}></DeleteFlower>
+                                                </div>
+                                            </div>
+                                            <Accordion.Collapse eventKey="0">
+                                                <div>
+                                                    <Card.Body> <Sight name={this.state.name[index]}></Sight> </Card.Body>
+                                                    <InsertBody update={this.sightingsFunction} name={this.state.name[index]}></InsertBody>
+                                                </div>
+                                            </Accordion.Collapse>
+                                        </Card>
+                                    </Accordion>
+                                </div>
+                            </div>
+                            <div className="row-50"></div>
                         </div>
-                    </div>
-                    <div className="row-50"></div>
-                </div>
+                    );
+                });
+                return block;
             }
             else {
                 return <div></div>
             }
-        });
+        }
 
         return <section className="fdb-block team-1">
             <div className="container">
@@ -195,24 +214,22 @@ class Pictures extends Component {
                             <img style={{ padding: "20px" }} alt="img" className="img-fluid rounded-0" src="./imgs/flowers/add.png" />
                             <div className="content">
                                 <div className="p-3">
-                                    <h3><strong>Common Name</strong></h3>
-                                    <p> Genus <br /> Species <br /> </p>
+                                    <div> <h3><strong> <EditText input="Common Name" change="name"></EditText> </strong></h3> </div>
+                                    <div><EditText input="Genus" change="genus"></EditText></div>
+                                    <div><EditText input="Species" change="species"></EditText></div>
                                 </div>
                                 <Accordion>
                                     <Card style={{ borderBottomColor: "#FFFFFF", borderRightColor: "#FFFFFF", borderLeftColor: "#FFFFFF" }}>
                                         <div className="p-3">
                                             <button style={{width: "100%"}} className="btn btn-outline-success" type="button" > <i class="fas fa-plus"></i> </button>
                                         </div>
-                                        <Accordion.Collapse eventKey="0">
-                                            <Card.Body> <p> Sighting Number: <br /> Sighted By: <br /> Location: <br /> Date: </p> </Card.Body>
-                                        </Accordion.Collapse>
                                     </Card>
                                 </Accordion>
                             </div>
                         </div>
                         <div className="row-50"></div>
                     </div>
-                    {block}
+                    <Block></Block>
                 </div>
             </div>
         </section>

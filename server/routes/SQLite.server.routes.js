@@ -8,5 +8,6 @@ router.route('/updateFlowers').post(SQLite.flowersUpdate);
 router.route('/updateSightings').post(SQLite.sightingsUpdate);
 router.route('/insertSightings').post(SQLite.sightingsInsert);
 router.route('/deleteSightings').post(SQLite.sightingsDelete);
+router.route('/deleteFlowers').post(SQLite.flowersDelete);
 
 module.exports = router;

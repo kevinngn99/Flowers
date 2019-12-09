@@ -156,3 +156,20 @@ exports.sightingsDelete = (req, res) => {
         }
     });
 }
+
+exports.flowersDelete = (req, res) => {
+    const name = "'" + req.body.name + "'";
+    const genus = "'" + req.body.genus + "'";
+    const species = "'" + req.body.species + "'";
+
+    const SQLDeleteFlower = 'DELETE FROM FLOWERS WHERE COMNAME = ' + name + ' AND GENUS = ' + genus + ' AND SPECIES = ' + species;
+    const db = new sqlite3.Database(__dirname + '/flowers2019.db');
+    db.all(SQLDeleteFlower, (err, rows) => {
+        if (!err) {
+            res.send('Flower has been deleted!');
+        }
+        else {
+            console.log(err);
+        }
+    });
+} 
