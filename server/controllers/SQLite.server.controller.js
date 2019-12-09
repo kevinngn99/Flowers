@@ -138,3 +138,21 @@ exports.sightingsInsert = (req, res) => {
         }
     });
 }
+
+exports.sightingsDelete = (req, res) => {
+    const name = "'" + req.body.name + "'";
+    const person = "'" + req.body.person + "'";
+    const location = "'" + req.body.location + "'";
+    const date = "'" + req.body.date + "'";
+
+    const SQLDeleteSighting = 'DELETE FROM SIGHTINGS WHERE NAME = ' + name + ' AND PERSON = ' + person + ' AND LOCATION = ' + location + ' AND SIGHTED = ' + date;
+    const db = new sqlite3.Database(__dirname + '/flowers2019.db');
+    db.all(SQLDeleteSighting, (err, rows) => {
+        if (!err) {
+            res.send('Sighting has been deleted!');
+        }
+        else {
+            console.log(err);
+        }
+    });
+}

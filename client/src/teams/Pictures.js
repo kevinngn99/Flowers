@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import EditText from '../components/EditText.js';
-import SightingsEditText from '../components/SightingsEditText.js';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
+import SightingsBody from '../components/SightingsBody.js';
 import InsertBody from '../components/InsertBody.js';
 const axios = require('axios');
 
@@ -126,15 +126,7 @@ class Pictures extends Component {
                 var chunk = this.state.sightings.map((obj, index) => {
                     if (obj['NAME'] === props.name) {
                         return (
-                            <div>
-                                <h4><strong> <br/> Sighting: #{index + 1} </strong></h4>
-                                <div> 
-                                    <h5> Name: <SightingsEditText update={this.sightingsFunction} name={obj['NAME']} person={obj['PERSON']} location={obj['LOCATION']} date={obj['SIGHTED']} change="person"></SightingsEditText> </h5>
-                                    <h5> Person: <SightingsEditText update={this.sightingsFunction} name={obj['NAME']} location={obj['LOCATION']} person={obj['PERSON']} date={obj['SIGHTED']} change="location"></SightingsEditText> </h5>
-                                    <h5> Date: <SightingsEditText update={this.sightingsFunction} name={obj['NAME']} date={obj['SIGHTED']} person={obj['PERSON']} location={obj['LOCATION']} change="date"></SightingsEditText></h5>
-                                    <button style={{ width: "100%", marginTop: "10px" }} className="btn btn-outline-secondary" type="button" > <i class="fas fa-trash-alt"></i> </button>
-                                </div>
-                            </div>
+                            <SightingsBody index={index} update={this.sightingsFunction} name={obj['NAME']} person={obj['PERSON']} location={obj['LOCATION']} date={obj['SIGHTED']}></SightingsBody>
                         );
                     }
                     else {
