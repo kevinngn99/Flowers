@@ -120,3 +120,7 @@ exports.sightingsUpdate = (req, res) => {
         });
     }
 }
+
+exports.sightingsInsert = (req, res) => {
+    // INSERT INTO SIGHTINGS(name, person, location, sighted) VALUES ('SUPER FLOWER', 'KEVIN', 'NGUYEN', '2019-12-25')
+}

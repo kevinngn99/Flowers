@@ -60,8 +60,8 @@ class SightingsEditText extends Component {
             <div style={{marginTop: "10px", marginBottom: "10px"}}>
                 <input autoComplete="off" type="text" className="form-control" id="editValue" defaultValue={this.state.value} />
                 <div style={{marginTop: "10px"}}>
-                    <button onClick={this.onEdit} className="btn btn-outline-secondary" type="button" > X </button>
-                    <button style={{marginLeft: "10px"}} onClick={this.onUpdate} className="btn btn-outline-success" type="button" > ✓ </button>
+                    <button onClick={this.onEdit} className="btn btn-outline-secondary" type="button" > <i class="fas fa-times"></i> </button>
+                    <button style={{marginLeft: "10px"}} onClick={this.onUpdate} className="btn btn-outline-success" type="button" > <i class="fas fa-check"></i> </button>
                 </div>
             </div>
         );

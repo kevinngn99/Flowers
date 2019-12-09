@@ -6,5 +6,6 @@ router.route('/flowers').post(SQLite.getFlowers);
 router.route('/sightings').post(SQLite.getSightings);
 router.route('/updateFlowers').post(SQLite.flowersUpdate);
 router.route('/updateSightings').post(SQLite.sightingsUpdate);
+router.route('/insertSightings').post(SQLite.sightingsInsert);
 
 module.exports = router;
