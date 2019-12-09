@@ -69,7 +69,7 @@ class SightingsEditText extends Component {
 
     renderText = () => {
         return (
-            <div onClick={this.onEdit}>
+            <div style={{color: "#8892a0"}} onClick={this.onEdit}>
                 {this.state.value}
             </div>
         );

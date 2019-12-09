@@ -122,5 +122,19 @@ exports.sightingsUpdate = (req, res) => {
 }
 
 exports.sightingsInsert = (req, res) => {
-    // INSERT INTO SIGHTINGS(name, person, location, sighted) VALUES ('SUPER FLOWER', 'KEVIN', 'NGUYEN', '2019-12-25')
+    const name = "'" + req.body.name + "'";
+    const person = "'" + req.body.person + "'";
+    const location = "'" + req.body.location + "'";
+    const date = "'" + req.body.date + "'";
+
+    const SQLInsertSighting = 'INSERT INTO SIGHTINGS (NAME, PERSON, LOCATION, SIGHTED) VALUES (' + name + ', ' + person + ', ' + location + ', ' + date + ')';
+    const db = new sqlite3.Database(__dirname + '/flowers2019.db');
+    db.all(SQLInsertSighting, (err, rows) => {
+        if (!err) {
+            res.send('Sighting has been inserted!');
+        }
+        else {
+            console.log(err);
+        }
+    });
 }

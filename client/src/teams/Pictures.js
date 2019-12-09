@@ -3,8 +3,8 @@ import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import EditText from '../components/EditText.js';
 import SightingsEditText from '../components/SightingsEditText.js';
-import InsertSightingsEditText from '../components/InsertSightingsEditText.js';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
+import InsertBody from '../components/InsertBody.js';
 const axios = require('axios');
 
 class Pictures extends Component {
@@ -127,14 +127,13 @@ class Pictures extends Component {
                     if (obj['NAME'] === props.name) {
                         return (
                             <div>
-                                <h4><strong> Sighting: #{index + 1} </strong></h4>
-                                <div style={{color: "#8892a0"}}> 
-                                    <SightingsEditText update={this.sightingsFunction} name={obj['NAME']} person={obj['PERSON']} location={obj['LOCATION']} date={obj['SIGHTED']} change="person"></SightingsEditText>
-                                    <SightingsEditText update={this.sightingsFunction} name={obj['NAME']} location={obj['LOCATION']} person={obj['PERSON']} date={obj['SIGHTED']} change="location"></SightingsEditText>
-                                    <SightingsEditText update={this.sightingsFunction} name={obj['NAME']} date={obj['SIGHTED']} person={obj['PERSON']} location={obj['LOCATION']} change="date"></SightingsEditText>
+                                <h4><strong> <br/> Sighting: #{index + 1} </strong></h4>
+                                <div> 
+                                    <h5> Name: <SightingsEditText update={this.sightingsFunction} name={obj['NAME']} person={obj['PERSON']} location={obj['LOCATION']} date={obj['SIGHTED']} change="person"></SightingsEditText> </h5>
+                                    <h5> Person: <SightingsEditText update={this.sightingsFunction} name={obj['NAME']} location={obj['LOCATION']} person={obj['PERSON']} date={obj['SIGHTED']} change="location"></SightingsEditText> </h5>
+                                    <h5> Date: <SightingsEditText update={this.sightingsFunction} name={obj['NAME']} date={obj['SIGHTED']} person={obj['PERSON']} location={obj['LOCATION']} change="date"></SightingsEditText></h5>
                                     <button style={{ width: "100%", marginTop: "10px" }} className="btn btn-outline-secondary" type="button" > <i class="fas fa-trash-alt"></i> </button>
                                 </div>
-                                <br/>
                             </div>
                         );
                     }
@@ -172,19 +171,7 @@ class Pictures extends Component {
                                     <Accordion.Collapse eventKey="0">
                                         <div>
                                             <Card.Body> <Sight name={this.state.name[index]}></Sight> </Card.Body>
-                                            <Card style={{ borderBottomColor: "#FFFFFF", borderRightColor: "#FFFFFF", borderLeftColor: "#FFFFFF" }}>
-                                            <div className="p-3">
-                                                <div>
-                                                    <h4><strong> New Sighting: </strong></h4>
-                                                    <div style={{color: "#8892a0"}}>
-                                                        <InsertSightingsEditText name={this.state.name[index]} person="Blank" location="Blank" date="Blank" change="person"></InsertSightingsEditText>
-                                                        <InsertSightingsEditText name={this.state.name[index]} location="Blank" person="Blank" date="Blank" change="location"></InsertSightingsEditText>
-                                                        <InsertSightingsEditText name={this.state.name[index]} date="Blank" person="Blank" location="Blank" change="date"></InsertSightingsEditText>
-                                                        <button style={{width: "100%", marginTop: "10px"}} className="btn btn-outline-success" type="button" > <i class="fas fa-plus"></i> </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            </Card>
+                                            <InsertBody update={this.sightingsFunction} name={this.state.name[index]}></InsertBody>
                                         </div>
                                     </Accordion.Collapse>
                                 </Card>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-const axios = require('axios');
 
 class SightingsEditText extends Component {
     constructor(props) {
@@ -17,7 +16,9 @@ class SightingsEditText extends Component {
         }
 
         this.state = {
+            insert: this.props.insert,
             value: val,
+            name: this.props.name,
             person: this.props.person,
             location: this.props.location,
             date: this.props.date,
@@ -33,6 +34,16 @@ class SightingsEditText extends Component {
     onUpdate = () => {
         this.setState({isEditing: false});
         this.setState({value: document.getElementById('editValue').value});
+
+        if (this.state.change === 'person') {
+            this.state.insert(this.state.name, document.getElementById('editValue').value, null, null);
+        }
+        else if (this.state.change === 'location') {
+            this.state.insert(this.state.name, null, document.getElementById('editValue').value, null);
+        }
+        else if (this.state.change === 'date') {
+            this.state.insert(this.state.name, null, null, document.getElementById('editValue').value);
+        }
     }
 
     renderEdit = () => {
@@ -49,7 +60,7 @@ class SightingsEditText extends Component {
 
     renderText = () => {
         return (
-            <div onClick={this.onEdit}>
+            <div style={{color: "#8892a0"}} onClick={this.onEdit}>
                 {this.state.value}
             </div>
         );
