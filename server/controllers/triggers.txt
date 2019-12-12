@@ -10,14 +10,16 @@ CREATE TRIGGER logs
 BEFORE INSERT ON FLOWERS
 BEGIN
 INSERT INTO log_changes (flowername,changesmade)
-VALUES(new.comname,"inserted"||new.comname|| "with genus: "||new.genus||"and species: "||new.species);
+VALUES(new.comname," inserted "||new.comname|| " with genus: "||new.genus||" and species: "||new.species);
 END;
 
 #LOGS DELETIONS OF FLOWERS 
 CREATE TRIGGER logs_DELETE_FLOWERS
-AFTER DELETE ON FLOWERS
+before DELETE on FLOWERS
 BEGIN
 INSERT INTO log_changes (flowername,changesmade)
-VALUES(new.comname,"deleted"||new.comname|| "with genus: "||new.genus||"and species: "||new.species);
+VALUES(new.comname," deleted "||new.comname|| " with genus: "||new.genus||" and species: "||new.species);
 END;
+
+
 
