@@ -18,62 +18,30 @@ class Pictures extends Component {
             genus: [],
             species: [],
             name: [],
-            files: [
-                'california-flannelbush.jpg',
-                'ithuriels-spear.jpg',
-                'primrose-monkeyflower.jpg',
-                'sheltons-violet.jpg',
-                'showy-jacobs-ladder.jpg',
-                'douglas-dustymaiden.jpg',
-                'pale-owls-clover.jpg',
-                'death-camas.jpg',
-                'broad-seeded-rock-cress.jpg',
-                'one-seeded-pussypaws.jpg',
-                'varied-leaved-jewelflower.jpg',
-                'leopard-lily.jpg',
-                'torreys-lomatium.jpg',
-                'alpine-penstemon.jpg',
-                'woodland-star.jpg',
-                'rangers_buttons.jpg',
-                'doves-foot-geranium.jpg',
-                'globe-gilia.jpg',
-                'canyon-dudleya.jpg',
-                'large-false-solomons-seal.jpg',
-                'hartwegs-wild-ginger.jpg',
-                'alpine-lewisia.jpg',
-                'cow-parsnip.jpg',
-                'bridges-gilia.jpg',
-                'alpine-sheep-sorrel.jpg',
-                'sierra-nevada-rush.jpg',
-                'mud-sedge.jpg',
-                'draperia.jpg',
-                'showy-milkweed.jpg',
-                'butter-and-eggs.jpg',
-                'sierra-stonecrop.jpg',
-                'hoary-buckwheat.jpg',
-                'sierra-angelica.jpg',
-                'snow-plant.jpg',
-                'sierra-daisy.jpg',
-                'alpine-columbine.jpg',
-                'kings-sandwort.jpg',
-                'woolly-sunflower.jpg',
-                'one-sided-wintergreen.jpg',
-                'red-mountain-heather.jpg',
-                'condensed-phlox.jpg',
-                'diamond-clarkia.jpg',
-                'large-leaved-lupine.jpg',
-                'purple-penstemon.jpg',
-                'fireweed.jpg',
-                'oak-violet.jpg',
-                'water-groundsel.jpg',
-                'tinkers-penny.jpg',
-                'yellow-and-white-monkeyflower.jpg',
-                'lovage.jpg'
-            ]
+            files: []
         };
 
+        this.filesFunction();
         this.flowersFunction(null);
         this.sightingsFunction();
+    }
+
+    filesFunction = () => {
+        axios.post('/api/files')
+        .then((res, err) => {
+            if (!err) {
+                var f = [];
+
+                for (var i = 0; i < res.data.length; i++) {
+                    f.push(res.data[i]['one']);
+                }
+
+                this.setState({files: f});
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     }
 
     flowersFunction = (index) => {
@@ -125,8 +93,20 @@ class Pictures extends Component {
 
     deletePicture = (index) => {
         var files = this.state.files;
-        delete files[index];
-        this.setState({files: files});
+        
+        var obj = {
+            name: files[index]
+        };
+        axios.post('/api/deleteFiles', obj)
+            .then((res, err) => {
+                if (!err) {
+                    delete files[index];
+                    this.setState({files: files});
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     render() {

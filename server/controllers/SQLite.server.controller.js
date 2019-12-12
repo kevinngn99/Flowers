@@ -1,5 +1,17 @@
 const sqlite3 = require('sqlite3').verbose();
 
+exports.getFiles = (req, res) => {
+    const db = new sqlite3.Database(__dirname + '/files.db');
+    db.all('SELECT * FROM FILE', (err, rows) => {
+        if (!err) {
+            res.send(rows);
+        }
+        else {
+            console.log(err);
+        }
+    });
+}
+
 exports.getFlowers = (req, res) => {
     const db = new sqlite3.Database(__dirname + '/flowers2019.db');
     db.all('SELECT * FROM FLOWERS', (err, rows) => {
@@ -132,6 +144,21 @@ exports.sightingsInsert = (req, res) => {
     db.all(SQLInsertSighting, (err, rows) => {
         if (!err) {
             res.send('Sighting has been inserted!');
+        }
+        else {
+            console.log(err);
+        }
+    });
+}
+
+exports.filesDelete = (req, res) => {
+    const name = "'" + req.body.name + "'";
+
+    const SQLDeleteFile = 'DELETE FROM FILE WHERE one = ' + name;
+    const db = new sqlite3.Database(__dirname + '/files.db');
+    db.all(SQLDeleteFile, (err, rows) => {
+        if (!err) {
+            res.send('File has been deleted!');
         }
         else {
             console.log(err);
