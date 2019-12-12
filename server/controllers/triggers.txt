@@ -18,8 +18,9 @@ CREATE TRIGGER logs_DELETE_FLOWERS
 before DELETE on FLOWERS
 BEGIN
 INSERT INTO log_changes (flowername,changesmade)
-VALUES(new.comname," deleted "||new.comname|| " with genus: "||new.genus||" and species: "||new.species);
+VALUES(old.comname," deleted "||old.comname|| " with genus: "||old.genus||" and species: "||old.species);
 END;
+
 
 
 
