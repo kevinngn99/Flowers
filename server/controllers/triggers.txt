@@ -6,11 +6,11 @@ changesMade VARCHAR(255)
 )
 
 #LOGS INSERTIONS ON FLOWERS
-CREATE TRIGGER logs
+CREATE TRIGGER logs_INSERTION_FLOWERS
 BEFORE INSERT ON FLOWERS
 BEGIN
 INSERT INTO log_changes (flowername,changesmade)
-VALUES(new.comname," inserted "||new.comname|| " with genus: "||new.genus||" and species: "||new.species);
+VALUES(new.comname," insertion ON FLOWER TABLE"||new.comname|| " with genus: "||new.genus||" and species: "||new.species);
 END;
 
 #LOGS DELETIONS OF FLOWERS 
@@ -18,7 +18,7 @@ CREATE TRIGGER logs_DELETE_FLOWERS
 before DELETE on FLOWERS
 BEGIN
 INSERT INTO log_changes (flowername,changesmade)
-VALUES(old.comname," deleted "||old.comname|| " with genus: "||old.genus||" and species: "||old.species);
+VALUES(old.comname," deletion ON FLOWER TABLE "||old.comname|| " with genus: "||old.genus||" and species: "||old.species);
 END;
 
 #LOGS DELETIONS OF Sightings 
@@ -26,9 +26,14 @@ CREATE TRIGGER logs_DELETE_SIGHTINGS
 before DELETE on SIGHTINGS
 BEGIN
 INSERT INTO log_changes (flowername,changesmade)
-VALUES(old.name," deleted "||old.name|| " with person: "||old.person||", location: "||old.location||", sighted: "||old.sighted);
+VALUES(old.name," deletion ON SIGHINGS TABLE "||old.name|| " with person: "||old.person||", location: "||old.location||", sighted: "||old.sighted);
 END;
 
-
-
+#LOGS INSERTIONS ON Sightings
+CREATE TRIGGER logs_INSERTION_SIGHTINGS
+BEFORE INSERT ON SIGHTINGS
+BEGIN
+INSERT INTO log_changes (flowername,changesmade)
+VALUES(new.name," insertion ON SIGHINGS TABLE "||new.name|| " with person: "||new.person||", location: "||new.location||", sighted: "||new.sighted);
+END;
 
