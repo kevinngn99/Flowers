@@ -37,3 +37,18 @@ INSERT INTO log_changes (flowername,changesmade)
 VALUES(new.name," insertion ON SIGHINGS TABLE "||new.name|| " with person: "||new.person||", location: "||new.location||", sighted: "||new.sighted);
 END;
 
+#LOGS UPDATES ON FLOWER TABLE
+CREATE TRIGGER logs_UPDATE_FLOWERS
+BEFORE UPDATE ON FLOWERS
+BEGIN
+INSERT INTO log_changes (flowername,changesmade)
+VALUES(new.comname," update ON FLOWER TABLE"||new.comname|| " with genus: "||new.genus||" and species: "||new.species);
+END;
+
+#LOGS UPDATES ON SIGHHTINGS TABLE
+CREATE TRIGGER logs_UPDATE_SIGHTINGS
+BEFORE UPDATE ON SIGHTINGS
+BEGIN
+INSERT INTO log_changes (flowername,changesmade)
+VALUES(new.name," UPDATE ON SIGHINGS TABLE "||new.name|| " with person: "||new.person||", location: "||new.location||", sighted: "||new.sighted);
+END;
