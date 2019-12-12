@@ -185,9 +185,9 @@ class Pictures extends Component {
         const Bruh = (props) => {
             if (this.state.loaded) {
                 return <div>
-                    <div> <h3><strong> <EditText input={props.name} change="name"></EditText> </strong></h3> </div>
-                    <div><EditText input={props.genus} change="genus"></EditText></div>
-                    <div><EditText input={props.species} change="species"></EditText></div>
+                    <div> <h3><strong> <EditText updateFlower={this.flowersFunction} updateSight={this.sightingsFunction} input={props.name} change="name"></EditText> </strong></h3> </div>
+                    <div><EditText updateFlower={this.flowersFunction} updateSight={this.sightingsFunction} input={props.genus} change="genus"></EditText></div>
+                    <div><EditText updateFlower={this.flowersFunction} updateSight={this.sightingsFunction}input={props.species} change="species"></EditText></div>
                 </div>
             }
             else {

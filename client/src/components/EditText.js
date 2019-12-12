@@ -6,6 +6,8 @@ class EditText extends Component {
         super(props);
 
         this.state = {
+            flowerUpdate: this.props.updateFlower,
+            sightUpdate: this.props.updateSight,
             value: this.props.input,
             change: this.props.change,
             isEditing: false
@@ -29,7 +31,8 @@ class EditText extends Component {
         axios.post('/api/updateFlowers', obj)
             .then((res, err) => {
                 if (!err) {
-                    console.log(res.data);
+                    this.state.flowerUpdate();
+                    this.state.sightUpdate();
                 }
             })
             .catch((err) => {
