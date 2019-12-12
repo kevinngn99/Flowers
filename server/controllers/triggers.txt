@@ -21,6 +21,12 @@ INSERT INTO log_changes (flowername,changesmade)
 VALUES(old.comname," deleted "||old.comname|| " with genus: "||old.genus||" and species: "||old.species);
 END;
 
-
+#LOGS DELETIONS OF Sightings 
+CREATE TRIGGER logs_DELETE_FLOWERS
+before DELETE on SIGHTINGS
+BEGIN
+INSERT INTO log_changes (flowername,changesmade)
+VALUES(old.comname," deleted "||old.name|| " with person: "||old.person||" and location: "||old.location" and sighted: "||old.sighted);
+END;
 
 
