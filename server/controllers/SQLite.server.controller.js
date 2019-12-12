@@ -95,8 +95,9 @@ exports.getFlowers = (req, res) => {
 }
 
 exports.getSightings = (req, res) => {
+    const SQLSightings = 'SELECT DISTINCT name, person, location, sighted FROM SIGHTINGS WHERE sighted IN (SELECT DISTINCT sighted FROM SIGHTINGS as S2 where S2.name = SIGHTINGS.name ORDER by sighted DESC limit 10) order by name, sighted';
     const db = new sqlite3.Database(__dirname + '/flowers2019.db');
-    db.all('SELECT * FROM SIGHTINGS', (err, rows) => {
+    db.all(SQLSightings, (err, rows) => {
         if (!err) {
             res.send(rows);
         }
@@ -302,11 +303,3 @@ exports.flowersDelete = (req, res) => {
         }
     });
 }
-
-/*
-SELECT FLOWERS.comname, SIGHTINGS.sighted
-FROM SIGHTINGS, FLOWERS
-WHERE SIGHTINGS.NAME = FLOWERS.COMNAME
-GROUP BY SIGHTINGS.sighted
-ORDER BY SIGHTINGS.sighted DESC LIMIT 10;
-*/
