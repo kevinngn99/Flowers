@@ -100,8 +100,7 @@ class Pictures extends Component {
         axios.post('/api/deleteFiles', obj)
             .then((res, err) => {
                 if (!err) {
-                    delete files[index];
-                    this.setState({files: files});
+                    this.filesFunction();
                 }
             })
             .catch((err) => {
@@ -134,6 +133,19 @@ class Pictures extends Component {
             }
         }
 
+        const Bruh = (props) => {
+            if (this.state.loaded) {
+                return <div>
+                    <div> <h3><strong> <EditText input={props.name} change="name"></EditText> </strong></h3> </div>
+                    <div><EditText input={props.genus} change="genus"></EditText></div>
+                    <div><EditText input={props.species} change="species"></EditText></div>
+                </div>
+            }
+            else {
+                return <div></div>
+            }
+        }
+
         var block = this.state.files.map((file, index) => {
             if (this.state.loaded) {
                 var path = './imgs/flowers/' + file;
@@ -143,9 +155,7 @@ class Pictures extends Component {
                             <img key={file} alt="img" className="img-fluid rounded-0" src={path} />
                             <div className="content">
                                 <div className="p-3">
-                                    <div> <h3><strong> <EditText input={this.state.name[index]} change="name"></EditText> </strong></h3> </div>
-                                    <div><EditText input={this.state.genus[index]} change="genus"></EditText></div>
-                                    <div><EditText input={this.state.species[index]} change="species"></EditText></div>
+                                    <Bruh name={this.state.name[index]} genus={this.state.genus[index]} species={this.state.species[index]}></Bruh>
                                 </div>
                                 <Accordion>
                                     <Card style={{ borderBottomColor: "#FFFFFF", borderRightColor: "#FFFFFF", borderLeftColor: "#FFFFFF" }}>
