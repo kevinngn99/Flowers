@@ -242,11 +242,11 @@ class Pictures extends Component {
                 var pad;
 
                 if (file.includes(".png")) {
-                    path = './imgs/flowers/' + 'flower.png';
+                    path = './imgs/flowers/flower.png';
                     pad = "20px";
                 }
                 else {
-                    path = './imgs/flowers/' + file;
+                    path = `./imgs/flowers/${file}`;
                     pad = "0px";
                 }
 
