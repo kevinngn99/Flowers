@@ -151,6 +151,38 @@ exports.sightingsInsert = (req, res) => {
     });
 }
 
+exports.flowersInsert = (req, res) => {
+    const name = "'" + req.body.name + "'";
+    const genus = "'" + req.body.genus + "'";
+    const species = "'" + req.body.species + "'";
+
+    const SQLInsertFlower = 'INSERT INTO FLOWERS (GENUS, SPECIES, COMNAME) VALUES (' + genus + ', ' + species + ', ' + name + ')';
+    const db = new sqlite3.Database(__dirname + '/flowers2019.db');
+    db.all(SQLInsertFlower, (err, rows) => {
+        if (!err) {
+            res.send('Flower has been inserted!');
+        }
+        else {
+            console.log(err);
+        }
+    });
+}
+
+exports.filesInsert = (req, res) => {
+    const name = "'" + req.body.name + "'";
+
+    const SQLInsertFile = 'INSERT INTO FILE (one) VALUES (' + name + ')';
+    const db = new sqlite3.Database(__dirname + '/files.db');
+    db.all(SQLInsertFile, (err, rows) => {
+        if (!err) {
+            res.send('File has been inserted!');
+        }
+        else {
+            console.log(err);
+        }
+    });
+}
+
 exports.filesDelete = (req, res) => {
     const name = "'" + req.body.name + "'";
 

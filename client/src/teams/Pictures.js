@@ -6,6 +6,7 @@ import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 import SightingsBody from '../components/SightingsBody.js';
 import InsertBody from '../components/InsertBody.js';
 import DeleteFlower from '../components/DeleteFlower.js';
+import InsertFlowersEditText from '../components/InsertFlowersEditText.js';
 const axios = require('axios');
 
 class Pictures extends Component {
@@ -13,6 +14,10 @@ class Pictures extends Component {
         super(props);
 
         this.state = {
+            insertCount: 0,
+            insertName: 'Common name',
+            insertGenus: 'Genus',
+            insertSpecies: 'Species',
             loaded: false,
             sightings: [],
             genus: [],
@@ -108,10 +113,54 @@ class Pictures extends Component {
             });
     }
 
+    saveInsert = (name, genus, species) => {
+        if (name) {
+            this.setState({insertName: name});
+        }
+        if (genus) {
+            this.setState({insertGenus: genus});
+        }
+        if (species) {
+            this.setState({insertSpecies: species});
+        }
+    }
+
+    insertFlower = () =>{
+        var obj = {
+            name: this.state.insertName,
+            genus: this.state.insertGenus,
+            species: this.state.insertSpecies
+        };
+        axios.post('/api/insertFlowers', obj)
+            .then((res, err) => {
+                if (!err) {
+                    var fileName = "flower" + this.state.insertCount + ".png";
+
+                    var file = {
+                        name: fileName
+                    }
+                    axios.post('/api/insertFiles', file)
+                    .then((res, err) => {
+                        if (!err) {
+                            this.setState({insertCount: this.state.insertCount + 1});
+                            this.flowersFunction();
+                            this.filesFunction();
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
     render() {
         const Toggle = (props) => {
             var onToggle = useAccordionToggle(props.eventKey);
-            return <button style={{ width: "45%", float: "left" }} eventKey="0" className="btn btn-outline-primary" type="button" onClick={onToggle}> <i class="fas fa-eye"></i> </button>
+            return <button style={{ width: "45%", float: "left" }} eventKey="0" className="btn btn-outline-primary" type="button" onClick={onToggle}> <i class="far fa-eye"></i> </button>
         }
 
         const Sight = (props) => {
@@ -146,13 +195,65 @@ class Pictures extends Component {
             }
         }
 
-        var block = this.state.files.map((file, index) => {
+        const NewFlower = () => {
             if (this.state.loaded) {
-                var path = './imgs/flowers/' + file;
                 return (
                     <div className="col-sm-3 text-left">
                         <div className="fdb-box p-0">
-                            <img key={file} alt="img" className="img-fluid rounded-0" src={path} />
+                            <img style={{ padding: "20px" }} alt="img" className="img-fluid rounded-0" src="./imgs/flowers/add.png" />
+                            <div className="content">
+                                <div className="p-3">
+                                    <Fleurs name={this.state.insertName} genus={this.state.insertGenus} species={this.state.insertSpecies}></Fleurs>
+                                </div>
+                                <Accordion>
+                                    <Card style={{ borderBottomColor: "#FFFFFF", borderRightColor: "#FFFFFF", borderLeftColor: "#FFFFFF" }}>
+                                        <div className="p-3">
+                                            <button onClick={this.insertFlower} style={{width: "100%"}} className="btn btn-outline-success" type="button" > <i class="fas fa-plus"></i> </button>
+                                        </div>
+                                    </Card>
+                                </Accordion>
+                            </div>
+                        </div>
+                        <div className="row-50"></div>
+                    </div>
+                );
+            }
+            else {
+                return <div></div>
+            }
+        }
+
+        const Fleurs = (props) => {
+            if (this.state.loaded) {
+                return <div>
+                    <div> <h3><strong> <InsertFlowersEditText insert={this.saveInsert} name={props.name} genus={props.genus} species={props.species} change="name"></InsertFlowersEditText> </strong></h3> </div>
+                    <div><InsertFlowersEditText insert={this.saveInsert} name={props.name} genus={props.genus} species={props.species} change="genus"></InsertFlowersEditText></div>
+                    <div><InsertFlowersEditText insert={this.saveInsert} name={props.name} genus={props.genus} species={props.species} change="species"></InsertFlowersEditText></div>
+                </div>
+            }
+            else {
+                return <div></div>
+            }
+        }
+
+        var block = this.state.files.map((file, index) => {
+            if (this.state.loaded) {
+                var path;
+                var pad;
+
+                if (file.includes(".png")) {
+                    path = './imgs/flowers/' + 'flower.png';
+                    pad = "20px";
+                }
+                else {
+                    path = './imgs/flowers/' + file;
+                    pad = "0px";
+                }
+
+                return (
+                    <div className="col-sm-3 text-left">
+                        <div className="fdb-box p-0">
+                            <img style={{ padding: pad }} key={file} alt="img" className="img-fluid rounded-0" src={path} />
                             <div className="content">
                                 <div className="p-3">
                                     <Bruh name={this.state.name[index]} genus={this.state.genus[index]} species={this.state.species[index]}></Bruh>
@@ -196,26 +297,7 @@ class Pictures extends Component {
                 <div className="row-50"></div>
 
                 <div className="row">
-                    <div className="col-sm-3 text-left">
-                        <div className="fdb-box p-0">
-                            <img style={{ padding: "20px" }} alt="img" className="img-fluid rounded-0" src="./imgs/flowers/add.png" />
-                            <div className="content">
-                                <div className="p-3">
-                                    <div> <h3><strong> <EditText input="Common Name" change="name"></EditText> </strong></h3> </div>
-                                    <div><EditText input="Genus" change="genus"></EditText></div>
-                                    <div><EditText input="Species" change="species"></EditText></div>
-                                </div>
-                                <Accordion>
-                                    <Card style={{ borderBottomColor: "#FFFFFF", borderRightColor: "#FFFFFF", borderLeftColor: "#FFFFFF" }}>
-                                        <div className="p-3">
-                                            <button style={{width: "100%"}} className="btn btn-outline-success" type="button" > <i class="fas fa-plus"></i> </button>
-                                        </div>
-                                    </Card>
-                                </Accordion>
-                            </div>
-                        </div>
-                        <div className="row-50"></div>
-                    </div>
+                    <NewFlower></NewFlower>
                     {block}
                 </div>
             </div>
