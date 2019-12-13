@@ -229,13 +229,11 @@ exports.flowersInsert = (req, res) => {
 
     const SQLInsertFlower = 'INSERT INTO FLOWERS (GENUS, SPECIES, COMNAME) VALUES (' + genus + ', ' + species + ', ' + name + ')';
     const db = new sqlite3.Database(__dirname + '/flowers2019.db');
-    db.all(SQLInsertFlower, (err, rows) => {
-        if (!err) {
+    db.serialize(function() {
+        db.exec('BEGIN TRANSACTION').run(SQLInsertFlower).exec("COMMIT")
+        .close(function() {
             res.send('Flower has been inserted!');
-        }
-        else {
-            console.log(err);
-        }
+        });
     });
 }
 
