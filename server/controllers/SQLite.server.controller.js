@@ -5,7 +5,7 @@ var SQLCreate = 'CREATE TABLE IF NOT EXISTS log_changes(flowerName VARCHAR(255),
 db.all(SQLCreate, (err, rows) => {
     if (!err) {
         console.log('Table has been created!');
-        var SQLFlowerInsertTrigger = 'CREATE TRIGGER logs_INSERTION_FLOWERS BEFORE INSERT ON FLOWERS BEGIN INSERT INTO log_changes (flowername,changesmade) VALUES(new.comname," insertion ON FLOWER TABLE"||new.comname|| " with genus: "||new.genus||" and species: "||new.species); END;';
+        const SQLFlowerInsertTrigger = 'CREATE TRIGGER logs_INSERTION_FLOWERS BEFORE INSERT ON FLOWERS BEGIN INSERT INTO log_changes (flowername,changesmade) VALUES(new.comname," insertion ON FLOWER TABLE"||new.comname|| " with genus: "||new.genus||" and species: "||new.species); END;';
         db.all(SQLFlowerInsertTrigger, (err, rows) => {
             if (!err) {
                 console.log('Flower Insert Trigger has been created!');
@@ -15,7 +15,7 @@ db.all(SQLCreate, (err, rows) => {
             }
         });
 
-        var SQLFlowerDeleteTrigger = 'CREATE TRIGGER logs_DELETE_FLOWERS before DELETE on FLOWERS BEGIN INSERT INTO log_changes (flowername,changesmade) VALUES(old.comname," deletion ON FLOWER TABLE "||old.comname|| " with genus: "||old.genus||" and species: "||old.species); END;';
+        const SQLFlowerDeleteTrigger = 'CREATE TRIGGER logs_DELETE_FLOWERS before DELETE on FLOWERS BEGIN INSERT INTO log_changes (flowername,changesmade) VALUES(old.comname," deletion ON FLOWER TABLE "||old.comname|| " with genus: "||old.genus||" and species: "||old.species); END;';
         db.all(SQLFlowerDeleteTrigger, (err, rows) => {
             if (!err) {
                 console.log('Flower Delete Trigger has been created!');
@@ -25,7 +25,7 @@ db.all(SQLCreate, (err, rows) => {
             }
         });
 
-        var SQLSightingInsertTrigger = 'CREATE TRIGGER logs_INSERTION_SIGHTINGS BEFORE INSERT ON SIGHTINGS BEGIN INSERT INTO log_changes (flowername,changesmade) VALUES(new.name," insertion ON SIGHINGS TABLE "||new.name|| " with person: "||new.person||", location: "||new.location||", sighted: "||new.sighted); END;';
+        const SQLSightingInsertTrigger = 'CREATE TRIGGER logs_INSERTION_SIGHTINGS BEFORE INSERT ON SIGHTINGS BEGIN INSERT INTO log_changes (flowername,changesmade) VALUES(new.name," insertion ON SIGHINGS TABLE "||new.name|| " with person: "||new.person||", location: "||new.location||", sighted: "||new.sighted); END;';
         db.all(SQLSightingInsertTrigger, (err, rows) => {
             if (!err) {
                 console.log('Sighting Insert Trigger has been created!');
@@ -35,7 +35,7 @@ db.all(SQLCreate, (err, rows) => {
             }
         });
 
-        var SQLSightingDeleteTrigger = 'CREATE TRIGGER logs_DELETE_SIGHTINGS before DELETE on SIGHTINGS BEGIN INSERT INTO log_changes (flowername,changesmade) VALUES(old.name," deletion ON SIGHINGS TABLE "||old.name|| " with person: "||old.person||", location: "||old.location||", sighted: "||old.sighted); END;';
+        const SQLSightingDeleteTrigger = 'CREATE TRIGGER logs_DELETE_SIGHTINGS before DELETE on SIGHTINGS BEGIN INSERT INTO log_changes (flowername,changesmade) VALUES(old.name," deletion ON SIGHINGS TABLE "||old.name|| " with person: "||old.person||", location: "||old.location||", sighted: "||old.sighted); END;';
         db.all(SQLSightingDeleteTrigger, (err, rows) => {
             if (!err) {
                 console.log('Sighting Delete Trigger has been created!');
@@ -45,7 +45,7 @@ db.all(SQLCreate, (err, rows) => {
             }
         });
 
-        var SQLFlowerUpdateTrigger = 'CREATE TRIGGER logs_UPDATE_FLOWERS BEFORE UPDATE ON FLOWERS BEGIN INSERT INTO log_changes (flowername,changesmade) VALUES(new.comname," update ON FLOWER TABLE"||new.comname|| " with genus: "||new.genus||" and species: "||new.species); END;';
+        const SQLFlowerUpdateTrigger = 'CREATE TRIGGER logs_UPDATE_FLOWERS BEFORE UPDATE ON FLOWERS BEGIN INSERT INTO log_changes (flowername,changesmade) VALUES(new.comname," update ON FLOWER TABLE"||new.comname|| " with genus: "||new.genus||" and species: "||new.species); END;';
         db.all(SQLFlowerUpdateTrigger, (err, rows) => {
             if (!err) {
                 console.log('Flower Update Trigger has been created!');
@@ -55,10 +55,20 @@ db.all(SQLCreate, (err, rows) => {
             }
         });
 
-        var SQLSightingUpdateTrigger = 'CREATE TRIGGER logs_UPDATE_SIGHTINGS BEFORE UPDATE ON SIGHTINGS BEGIN INSERT INTO log_changes (flowername,changesmade) VALUES(new.name," UPDATE ON SIGHINGS TABLE "||new.name|| " with person: "||new.person||", location: "||new.location||", sighted: "||new.sighted); END;';
+        const SQLSightingUpdateTrigger = 'CREATE TRIGGER logs_UPDATE_SIGHTINGS BEFORE UPDATE ON SIGHTINGS BEGIN INSERT INTO log_changes (flowername,changesmade) VALUES(new.name," UPDATE ON SIGHINGS TABLE "||new.name|| " with person: "||new.person||", location: "||new.location||", sighted: "||new.sighted); END;';
         db.all(SQLSightingUpdateTrigger, (err, rows) => {
             if (!err) {
                 console.log('Sighting Update Trigger has been created!');
+            }
+            else {
+                console.log(err);
+            }
+        });
+
+        const SQLSightingIndex = 'CREATE INDEX indexes_sightings ON SIGHTINGS(name, person, location, sighted);';
+        db.all(SQLSightingIndex, (err, rows) => {
+            if (!err) {
+                console.log('Sighting Index has been created!');
             }
             else {
                 console.log(err);
