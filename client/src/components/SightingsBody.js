@@ -39,8 +39,8 @@ class SightingsBody extends Component {
             <div>
                 <h4><strong> <br/> Sighting: #{this.state.index + 1} </strong></h4>
                 <div> 
-                    <h5> Name: <SightingsEditText update={this.state.update} name={this.state.name} person={this.state.person} location={this.state.location} date={this.state.date} change="person"></SightingsEditText> </h5>
-                    <h5> Person: <SightingsEditText update={this.state.update} name={this.state.name} location={this.state.location} person={this.state.person} date={this.state.date} change="location"></SightingsEditText> </h5>
+                    <h5> Person: <SightingsEditText update={this.state.update} name={this.state.name} person={this.state.person} location={this.state.location} date={this.state.date} change="person"></SightingsEditText> </h5>
+                    <h5> Location: <SightingsEditText update={this.state.update} name={this.state.name} location={this.state.location} person={this.state.person} date={this.state.date} change="location"></SightingsEditText> </h5>
                     <h5> Date: <SightingsEditText update={this.state.update} name={this.state.name} date={this.state.date} person={this.state.person} location={this.state.location} change="date"></SightingsEditText></h5>
                     <button onClick={this.onDelete} style={{ width: "100%", marginTop: "10px" }} className="btn btn-outline-secondary" type="button" > <i class="fas fa-trash-alt"></i> </button>
                 </div>

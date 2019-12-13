@@ -236,6 +236,17 @@ class Pictures extends Component {
             }
         }
 
+        const Why = (props) => {
+            if (this.state.loaded) {
+                return <div>
+                    <InsertBody update={this.sightingsFunction} name={props.name}></InsertBody>
+                </div>
+            }
+            else {
+                return <div></div>
+            }
+        }
+
         var block = this.state.files.map((file, index) => {
             if (this.state.loaded) {
                 var path;
@@ -269,7 +280,7 @@ class Pictures extends Component {
                                         <Accordion.Collapse eventKey="0">
                                             <div>
                                                 <Card.Body> <Sight name={this.state.name[index]}></Sight> </Card.Body>
-                                                <InsertBody update={this.sightingsFunction} name={this.state.name[index]}></InsertBody>
+                                                <Why name={this.state.name[index]}></Why>
                                             </div>
                                         </Accordion.Collapse>
                                     </Card>

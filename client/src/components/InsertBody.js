@@ -57,8 +57,8 @@ class InsertBody extends Component {
                 <div>
                     <h4><strong> New Sighting: </strong></h4>
                     <div>
-                        <h5> Name: <InsertSightingsEditText insert={this.saveInsert} name={this.state.name} person="Blank" location="Blank" date="Blank" change="person"></InsertSightingsEditText> </h5>
-                        <h5> Person: <InsertSightingsEditText insert={this.saveInsert} name={this.state.name} location="Blank" person="Blank" date="Blank" change="location"></InsertSightingsEditText> </h5>
+                        <h5> Person: <InsertSightingsEditText insert={this.saveInsert} name={this.state.name} person="Blank" location="Blank" date="Blank" change="person"></InsertSightingsEditText> </h5>
+                        <h5> Location: <InsertSightingsEditText insert={this.saveInsert} name={this.state.name} location="Blank" person="Blank" date="Blank" change="location"></InsertSightingsEditText> </h5>
                         <h5> Date: <InsertSightingsEditText insert={this.saveInsert} name={this.state.name} date="Blank" person="Blank" location="Blank" change="date"></InsertSightingsEditText> </h5>
                         <button onClick={this.onInsert} style={{width: "100%", marginTop: "10px"}} className="btn btn-outline-success" type="button" > <i class="fas fa-plus"></i> </button>
                     </div>
